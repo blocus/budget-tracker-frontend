@@ -1,5 +1,7 @@
-import React from 'react'
-import { AxisOptions, Chart } from 'react-charts'
+// import { AxisOptions, Chart } from 'react-charts'
+import { ApexOptions } from 'apexcharts'
+import { formatDate } from 'helpers/date'
+import Chart from 'react-apexcharts'
 
 export interface MonthDataValue {
   date: Date
@@ -12,55 +14,53 @@ interface MonthChartProps {
 }
 
 export default function MonthChart({ data }: MonthChartProps) {
-  const [activeSeriesIndex, setState] = React.useState(-1)
-
-  const chartData = [
-    {
-      label: 'expenses',
-      data: data.map(({ date, expense }) => ({ primary: date, secondary: expense })),
+  const options: ApexOptions = {
+    chart: { stacked: false, toolbar: { show: false }, zoom: { enabled: false } },
+    dataLabels: { enabled: false },
+    colors: ['#FF1654', '#247BA0'],
+    stroke: { width: [4, 4] },
+    plotOptions: { bar: { columnWidth: '20%' } },
+    xaxis: {
+      labels: { format: 'dd/MM' },
+      categories: data.map(({ date }) => formatDate(date)),
     },
-    {
-      label: 'income',
-      data: data.map(({ date, income }) => ({ primary: date, secondary: income })),
-    },
-  ]
-
-  const primaryAxis: AxisOptions<typeof chartData[number]['data'][number]> = {
-    getValue: datum => datum.primary,
+    yaxis: [
+      {
+        axisTicks: { show: true },
+        axisBorder: { show: true, color: '#FF1654' },
+        labels: { style: { colors: '#FF1654' } },
+        title: { text: 'Expences', style: { color: '#FF1654' } },
+      },
+      {
+        opposite: true,
+        axisTicks: { show: true },
+        axisBorder: { show: true, color: '#247BA0' },
+        labels: { style: { colors: '#247BA0' } },
+        title: { text: 'Income', style: { color: '#247BA0' } },
+      },
+    ],
+    tooltip: { shared: false, intersect: true, x: { show: false } },
+    legend: { offsetX: 40 },
+  }
+  const state = {
+    series: [
+      {
+        name: 'Expences',
+        data: data.map(({ expense }) => parseFloat(expense.toFixed(3))),
+      },
+      {
+        name: 'Income',
+        data: data.map(({ income }) => parseFloat(income.toFixed(3))),
+      },
+    ],
   }
 
-  const secondaryAxes: AxisOptions<typeof chartData[number]['data'][number]> = {
-    getValue: datum => datum.secondary,
-  }
-
+  const height = 300
   return (
     <>
       <h1>Month chart</h1>
-      <div style={{ width: '100%', height: 300, position: 'relative' }}>
-        <Chart
-          options={{
-            data: chartData,
-            primaryAxis,
-            secondaryAxes: [secondaryAxes],
-            getSeriesStyle: series => ({
-              color: `url(#${series.label})`,
-              opacity: activeSeriesIndex > -1 && series.index !== activeSeriesIndex ? 0.3 : 1,
-            }),
-            onFocusDatum: focused => setState(focused ? focused.seriesIndex : -1),
-            renderSVG: () => (
-              <defs>
-                <linearGradient id='expenses' x1='0' x2='0' y1='1' y2='0'>
-                  <stop offset='0%' stopColor='#ff8f10' />
-                  <stop offset='100%' stopColor='#ff3434' />
-                </linearGradient>
-                <linearGradient id='income' x1='0' x2='0' y1='1' y2='0'>
-                  <stop offset='0%' stopColor='#42E695' />
-                  <stop offset='100%' stopColor='#3BB2B8' />
-                </linearGradient>
-              </defs>
-            ),
-          }}
-        />
+      <div style={{ height }}>
+        <Chart options={options} series={state.series} type='line' height={height} />
       </div>
     </>
   )

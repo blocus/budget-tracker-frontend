@@ -26,7 +26,7 @@ export const expenseCategories: CategoriesValuesInterface[] = [
 export const incomeCategories: CategoriesValuesInterface[] = [
   { icon: '🔨', title: 'Work' },
   { icon: '🚀', title: 'Freelance' },
-  { icon: '💸', title: 'Dividantes' },
+  { icon: '💸', title: 'Dividends' },
 ]
 
 export const currency = 'TND'

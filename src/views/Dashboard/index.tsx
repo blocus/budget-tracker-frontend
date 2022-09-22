@@ -23,8 +23,8 @@ function Dashboard() {
       incomeCategories.map(({ icon, title }) => ({
         icon,
         title,
-        planned: Math.random() * 1000,
-        actual: Math.random() * 1000,
+        planned: Math.random() * 10000,
+        actual: Math.random() * 10000,
       })),
     []
   )
@@ -33,7 +33,7 @@ function Dashboard() {
     () =>
       Array.from({ length: getDays(new Date().getMonth()) }).map((_, day) => ({
         date: new Date(new Date().getFullYear(), new Date().getMonth(), day + 1),
-        income: Math.random() * 100,
+        income: Math.random() * 1000,
         expense: Math.random() * 100,
       })),
     []

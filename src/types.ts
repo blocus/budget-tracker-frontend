@@ -9,3 +9,5 @@ export interface CategoriesValuesInterface {
   icon: string
   title: string
 }
+
+export type LanguagesTypes = 'en'
