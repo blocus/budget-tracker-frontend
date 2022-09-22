@@ -3,6 +3,8 @@ import { getDays } from 'helpers'
 import { useMemo } from 'react'
 import { PlannedAcutalValues } from 'types'
 import { MonthDataValue } from './MonthChart'
+import Summary from './Summary'
+
 function Dashboard() {
   const expenses: PlannedAcutalValues[] = useMemo(
     () =>
@@ -34,6 +36,15 @@ function Dashboard() {
         expense: Math.random() * 100,
       })),
     []
+  )
+
+  return (
+    <main>
+      <Summary
+        income={incomes.reduce((total, { actual }) => total + actual, 0)}
+        expenses={expenses.reduce((total, { actual }) => total + actual, 0)}
+      />
+    </main>
   )
 }
 
