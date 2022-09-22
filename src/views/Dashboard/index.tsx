@@ -2,7 +2,7 @@ import { expenseCategories, incomeCategories } from 'data'
 import { getDays } from 'helpers'
 import { useMemo } from 'react'
 import { PlannedAcutalValues } from 'types'
-import { MonthDataValue } from './MonthChart'
+import MonthChart, { MonthDataValue } from './MonthChart'
 import Summary from './Summary'
 
 function Dashboard() {
@@ -44,6 +44,7 @@ function Dashboard() {
         income={incomes.reduce((total, { actual }) => total + actual, 0)}
         expenses={expenses.reduce((total, { actual }) => total + actual, 0)}
       />
+      <MonthChart data={monthData} />
     </main>
   )
 }
