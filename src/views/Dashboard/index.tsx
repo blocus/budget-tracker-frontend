@@ -1,4 +1,5 @@
-import { expenseCategories, incomeCategories } from 'data'
+import PlannedActualTable from 'components/PlannedActualTable'
+import { currency, expenseCategories, incomeCategories } from 'data'
 import { getDays } from 'helpers'
 import { useMemo } from 'react'
 import { PlannedAcutalValues } from 'types'
@@ -45,6 +46,8 @@ function Dashboard() {
         expenses={expenses.reduce((total, { actual }) => total + actual, 0)}
       />
       <MonthChart data={monthData} />
+      <PlannedActualTable title='Income' data={incomes} currency={currency} />
+      <PlannedActualTable title='Expenses' data={expenses} currency={currency} />
     </main>
   )
 }
